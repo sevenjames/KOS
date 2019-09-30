@@ -1,15 +1,27 @@
 // Execute Node Script
 // "This short script can execute any maneuver node with 0.1 m/s dv precision."
 
-// 2019-06-12 JAO
+// 2019 JAO
 // adjustments to math and logic, more status prints, code cleanup
 
 // Based on 2017 "Execute Node Script" in the KOS Tutorial.
 // https://ksp-kos.github.io/KOS_DOC/tutorials/exenode.html
 
-================================================================================
+//==============================================================================
 
-set clearance to 1.
+@LAZYGLOBAL OFF.
+local clearance is 1.
+local nd is 0.
+local max_acc is 0.
+local burn_duration is 0.
+local prep_duration is 0.
+local node_eta is 0.
+local burn_eta is 0.
+local prep_eta is 0.
+local tset is 0.
+local dv0 is 0.
+local node_complete is FALSE.
+local remove_node is FALSE.
 
 if hasnode = 0 {
 	print "No maneuver node.".
@@ -74,7 +86,6 @@ function executenode {
 	wait until nd:eta <= (burn_duration/2).
 
 	// lock throttle
-	set tset to 0.
 	lock throttle to tset.
 	print "Throttle locked.".
 
@@ -83,8 +94,7 @@ function executenode {
 	set dv0 to nd:deltav.
 
 	print "Executing burn...".
-	set done to False.
-	until done {
+	until node_complete {
 		// recalculate current max_acceleration
 		set max_acc to (ship:availablethrust/ship:mass).
 
@@ -114,7 +124,7 @@ function executenode {
 			print "Remaining dv " + round(nd:deltav:mag,1) + "m/s, vdot: " + round(vdot(dv0, nd:deltav),1).
 			print "Burn Complete.".
 			set remove_node to True.
-			set done to True.
+			set node_complete to True.
 		}
 	}
 
