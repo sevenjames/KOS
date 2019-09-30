@@ -1,0 +1,32 @@
+
+
+
+enable engine
+use ship:availablethrust
+# cant accurately identify current stage engines
+
+
+use engine:possiblethrust
+# cant accurately identify current stage engines
+
+
+check for zero first
+exit with warning "cannot execute node. current stage engine(s) are disabled."
+
+
+SHIP(VESSEL)
+	MAXTHRUST
+		sum of all the engines’ MAXTHRUSTs of all the currently active engines 
+	AVAILABLETHRUST
+		sum of all the engines’ AVAILABLETHRUSTs of all the currently active engines 
+
+ENGINE
+	THRUST
+		actual right now
+	MAXTHRUST
+		max, disregard thrust limit, zero if off
+	AVAILABLETHRUST
+		max at current thrust limit, zero if off
+	POSSIBLETHRUST
+		max at current thrust limit, correct if off
+
