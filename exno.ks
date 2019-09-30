@@ -9,13 +9,23 @@
 
 ================================================================================
 
-// wrap node execution into a function
-// add a "main" routine that does flightcheck and only runs node if clear
-// exit on any of these:
-// ship:availablethrust = 0
-// if hasnode = 0
-// no node error::: print "Program abort: No maneuver node.".
+set clearance to 1.
 
+if hasnode = 0 {
+	print "No maneuver node.".
+	set clearance to 0.
+}
+
+if ship:availablethrust = 0 {
+	print "Main engines offline.".
+	set clearance to 0.
+}
+
+if clearance = 1 {
+	executenode{}.
+} else {
+	print "Program abort".
+}
 
 function executenode {
 	clearscreen.
