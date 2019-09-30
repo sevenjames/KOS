@@ -7,12 +7,6 @@
 // Based on 2017 "Execute Node Script" in the KOS Tutorial.
 // https://ksp-kos.github.io/KOS_DOC/tutorials/exenode.html
 
-// insert preflight checklist here
-// exit on any of these:
-// ship:availablethrust = 0
-// if hasnode = 0
-
-
 if hasnode {
 
 clearscreen.
