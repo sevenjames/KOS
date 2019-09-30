@@ -79,6 +79,7 @@ function executenode {
 	print "Throttle locked.".
 
 	// save the initial node deltav vector
+	// this might be redundant with np <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<?
 	set dv0 to nd:deltav.
 
 	print "Executing burn...".
