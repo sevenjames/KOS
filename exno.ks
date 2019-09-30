@@ -7,6 +7,8 @@
 // Based on 2017 "Execute Node Script" in the KOS Tutorial.
 // https://ksp-kos.github.io/KOS_DOC/tutorials/exenode.html
 
+// insert preflight section here
+
 if hasnode {
 
 clearscreen.
