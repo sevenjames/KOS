@@ -7,7 +7,11 @@
 // Based on 2017 "Execute Node Script" in the KOS Tutorial.
 // https://ksp-kos.github.io/KOS_DOC/tutorials/exenode.html
 
-// insert preflight section here
+// insert preflight checklist here
+// exit on any of these:
+// ship:availablethrust = 0
+// if hasnode = 0
+
 
 if hasnode {
 
@@ -41,6 +45,8 @@ print "Maneuver Prep in " + round(prep_eta) + " seconds".
 // Wait for node.
 print "Waiting for node...".
 wait until nd:eta <= ((burn_duration/2) + prep_duration).
+
+// ############ insert timewarp stop here
 
 // start turning ship to align with node
 sas off.
