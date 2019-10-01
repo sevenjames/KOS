@@ -19,6 +19,7 @@ local node_eta is 0.
 local burn_eta is 0.
 local prep_eta is 0.
 local tset is 0.
+local np is 0.
 local dv0 is 0.
 local node_complete is FALSE.
 local remove_node is FALSE.
