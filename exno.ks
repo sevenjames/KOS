@@ -93,7 +93,7 @@ function executenode {
 
 	print "Executing burn...".
 	until node_complete {
-		// recalculate current max_acceleration
+		// recalculate current max_acceleration. this goes up as fuel is spent and ship mass goes down.
 		set max_acc to (ship:availablethrust/ship:mass).
 
 		// throttle control; adjusts based on remaining node dv
