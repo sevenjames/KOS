@@ -36,7 +36,7 @@ if ship:availablethrust = 0 {
 }
 
 if clearance = 1 {
-	executenode{}.
+	executenode().
 } else {
 	print "Program abort".
 }
