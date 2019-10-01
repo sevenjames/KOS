@@ -19,9 +19,11 @@ local node_eta is 0.
 local burn_eta is 0.
 local prep_eta is 0.
 local tset is 0. // throttle set
-local node_vec is 0. // node burn vector
+local node_vec is 0. // initial node burn vector
 local node_complete is FALSE.
 local remove_node is FALSE.
+local blanks is "          ".
+local printline is 2.
 
 if hasnode = 0 {
 	print "No maneuver node.".
@@ -60,10 +62,6 @@ function executenode {
 	set burn_eta to (node_eta - burn_duration/2).
 	set prep_eta to (burn_eta - prep_duration).
 
-	// print maneuver data
-	// print "Burn duration: " + round(burn_duration) + " seconds".
-	// print "Node in: " + round(node_eta) + " seconds".
-	// print "Burn in: " + round(burn_eta) + " seconds".
 	print "Maneuver Prep Duration: " + round(prep_duration) + " seconds".
 	print "Maneuver Prep in " + round(prep_eta) + " seconds".
 
@@ -93,6 +91,15 @@ function executenode {
 
 	print "Executing burn...".
 	until node_complete {
+		// realtime data printout
+		set printline to 12.
+		print "availablethrust  : " + round(ship:availablethrust,5) + blanks at (2,printline). set printline to printline + 1.
+		print "mass             : " + round(ship:mass,5)            + blanks at (2,printline). set printline to printline + 1.
+		print "max_acc          : " + round(max_acc,5)              + blanks at (2,printline). set printline to printline + 1.
+		print "nd:deltav:mag    : " + round(nd:deltav:mag,5)        + blanks at (2,printline). set printline to printline + 1.
+		print "tset             : " + round(tset,5)                 + blanks at (2,printline). set printline to printline + 1.
+		print "vdot             : " + round(vdot(node_vec, nd:deltav),5) + blanks at (2,printline). set printline to printline + 1.
+
 		// recalculate current max_acceleration. this goes up as fuel is spent and ship mass goes down.
 		set max_acc to (ship:availablethrust/ship:mass).
 
