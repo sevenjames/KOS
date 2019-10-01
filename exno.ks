@@ -109,6 +109,7 @@ function executenode {
 		// dot product of initial node vector and current node vector indicates "completeness" of maneuver.
 		// negative value indicates maneuver overshoot. possible with high TWR.
 		if vdot(node_vec, nd:deltav) < 0 {
+			set printline to 19.
 			print "Possible overshoot detected.".
 			lock throttle to 0.
 			print "Remaining dv " + round(nd:deltav:mag,1) + "m/s, vdot: " + round(vdot(node_vec, nd:deltav),1).
@@ -120,6 +121,7 @@ function executenode {
 
 		// finalize burn when remaining dv is very small
 		if nd:deltav:mag < 1.0 {
+			set printline to 19.
 			print "Remaining dv " + round(nd:deltav:mag,1) + "m/s, vdot: " + round(vdot(node_vec, nd:deltav),1).
 			print "Finalizing burn...".
 			// burn until node vector starts to drift significantly from initial vector
