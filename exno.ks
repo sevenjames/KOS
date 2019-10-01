@@ -147,4 +147,4 @@ function executenode {
 
 	print "MANEUVER NODE COMPLETE.".
 
-}. // end function executenode
+}
