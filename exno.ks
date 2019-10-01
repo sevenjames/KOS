@@ -11,16 +11,15 @@
 
 @LAZYGLOBAL OFF.
 local clearance is 1.
-local nd is 0.
+local nd is 0. // the node
 local max_acc is 0.
 local burn_duration is 0.
 local prep_duration is 0.
 local node_eta is 0.
 local burn_eta is 0.
 local prep_eta is 0.
-local tset is 0.
-local np is 0.
-local dv0 is 0.
+local tset is 0. // throttle set
+local node_vec is 0. // node burn vector
 local node_complete is FALSE.
 local remove_node is FALSE.
 
@@ -74,13 +73,15 @@ function executenode {
 
 	// ############ insert timewarp stop here
 
+	// save the initial node vector
+	set node_vec to nd:deltav.
+	
 	// start turning ship to align with node
 	sas off.
-	set np to nd:deltav.
-	lock steering to np.
+	lock steering to node_vec.
 	print "Steering locked.".
 	print "Turning ship to align with node...".
-	wait until vang(np, ship:facing:vector) < 0.25.
+	wait until vang(node_vec, ship:facing:vector) < 0.25.
 
 	// wait for burn time
 	print "Waiting until burn time...".
@@ -89,10 +90,6 @@ function executenode {
 	// lock throttle
 	lock throttle to tset.
 	print "Throttle locked.".
-
-	// save the initial node deltav vector
-	// this might be redundant with np <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<?
-	set dv0 to nd:deltav.
 
 	print "Executing burn...".
 	until node_complete {
@@ -104,10 +101,10 @@ function executenode {
 
 		// dot product of initial node vector and current node vector indicates "completeness" of maneuver.
 		// negative value indicates maneuver overshoot. possible with high TWR.
-		if vdot(dv0, nd:deltav) < 0 {
+		if vdot(node_vec, nd:deltav) < 0 {
 			print "Possible overshoot detected.".
 			lock throttle to 0.
-			print "Remaining dv " + round(nd:deltav:mag,1) + "m/s, vdot: " + round(vdot(dv0, nd:deltav),1).
+			print "Remaining dv " + round(nd:deltav:mag,1) + "m/s, vdot: " + round(vdot(node_vec, nd:deltav),1).
 			print "Burn Complete.".
 			print "Maneuver node retained for review.".
 			set remove_node to False.
@@ -116,13 +113,13 @@ function executenode {
 
 		// finalize burn when remaining dv is very small
 		if nd:deltav:mag < 1.0 {
-			print "Remaining dv " + round(nd:deltav:mag,1) + "m/s, vdot: " + round(vdot(dv0, nd:deltav),1).
+			print "Remaining dv " + round(nd:deltav:mag,1) + "m/s, vdot: " + round(vdot(node_vec, nd:deltav),1).
 			print "Finalizing burn...".
 			// burn until node vector starts to drift significantly from initial vector
-			wait until vdot(dv0, nd:deltav) < 0.5.
+			wait until vdot(node_vec, nd:deltav) < 0.5.
 
 			lock throttle to 0.
-			print "Remaining dv " + round(nd:deltav:mag,1) + "m/s, vdot: " + round(vdot(dv0, nd:deltav),1).
+			print "Remaining dv " + round(nd:deltav:mag,1) + "m/s, vdot: " + round(vdot(node_vec, nd:deltav),1).
 			print "Burn Complete.".
 			set remove_node to True.
 			set node_complete to True.
