@@ -145,6 +145,6 @@ function executenode {
 	unlock throttle.
 	wait 1.
 
-	print "Maneuver Node Complete.".
+	print "MANEUVER NODE COMPLETE.".
 
 }. // end function executenode
