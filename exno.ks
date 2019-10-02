@@ -24,8 +24,8 @@ local node_complete is FALSE.
 local remove_node is FALSE.
 local blanks is "          ".
 local program_state is "".
-local steering_state is "".
-local throttle_state is "".
+local steering_state is "Unlocked.".
+local throttle_state is "Unlocked.".
 local printline is 2.
 
 if hasnode = 0 {
@@ -66,50 +66,45 @@ function print_data {
 }
 
 function executenode {
-	//set terminal:width to 50.//confirm preferred term size in game.
+	//set terminal:width to 50.//confirm preferred term size in game
 	//set terminal:height to 24.
 	clearscreen.
 
+	set program_state to "Preflight calculations.".
 	// get the next available maneuver node
 	set nd to nextnode.
-
-	// Crude calculation of estimated duration of burn. 
+	// Crude calculation of estimated duration of burn
 	set max_acc to (ship:availablethrust/ship:mass).
 	set burn_duration to (nd:deltav:mag/max_acc).
-
-	// prep time = 10s + 10s per ton, consider setting a 60s minimum <<<<<<<<<<<
+	// prep time = 10s + 10s per ton, consider setting a 60s minimum <<<
 	set prep_duration to (10 + 10*ship:mass).
-
 	// calc times
 	set node_eta to nd:eta.
 	set burn_eta to (node_eta - burn_duration/2).
 	set prep_eta to (burn_eta - prep_duration).
 
-	// Wait for node.
+	set program_state to "Waiting for node.".
 	until nd:eta <= ((burn_duration/2) + prep_duration) {
 		wait 1. // no need for fast calc while waiting for prep
 	}
 
-	// ############ insert timewarp stop here
+	// <<< insert timewarp stop here <<<
 
-	// save the initial node vector
-	set node_vec to nd:deltav.
-	
-	// start turning ship to align with node
+	set program_state to "Waiting for ship alignment.".
+	set node_vec to nd:deltav. // save the initial node burn vector
 	sas off.
-	lock steering to node_vec.
+	lock steering to node_vec. set steering_state to "LOCKED.".
 	until vang(node_vec, ship:facing:vector) < 0.25 {
-		wait 0. // allow at least 1 physics tick to elapse.
+		wait 0. // allow at least 1 physics tick to elapse
 	}
 
-	// wait for burn time
+	set program_state to "Waiting for burn.".
 	until nd:eta <= (burn_duration/2) {
-		wait 0. // allow at least 1 physics tick to elapse.
+		wait 0. // allow at least 1 physics tick to elapse
 	}
 
-	// lock throttle
-	lock throttle to tset.
-
+	set program_state to "Executing Burn.".
+	lock throttle to tset. set throttle_state to "LOCKED.".
 	until node_complete {
 		// recalculate current max_acceleration. this goes up as fuel is spent and ship mass goes down.
 		set max_acc to (ship:availablethrust/ship:mass).
@@ -122,28 +117,30 @@ function executenode {
 		if vdot(node_vec, nd:deltav) < 0 {
 			lock throttle to 0.
 			set remove_node to False. // keep node for review
+			set program_state to "Burn Complete. Overshoot Detected. Node preserved for review.".
 			break.
 		}
 
 		// finalize burn when remaining dv is very small
 		if nd:deltav:mag < 1.0 {
+			set program_state to "Finalizing Burn.".
 			// burn until node vector starts to drift significantly from initial vector
 			until vdot(node_vec, nd:deltav) < 0.5 {
 				
-				wait 0. // allow at least 1 physics tick to elapse.
+				wait 0. // allow at least 1 physics tick to elapse
 			}
 			lock throttle to 0.
 			set remove_node to True.
 			set node_complete to True.
+			set program_state to "Burn Complete.".
 		}
-		wait 0. // allow at least 1 physics tick to elapse.
+		wait 0. // allow at least 1 physics tick to elapse
 	}
 
 	// cleanup
 	if remove_node {remove nd.}
 	set ship:control:pilotmainthrottle to 0.
-	unlock steering.
-	unlock throttle.
+	unlock steering. set steering_state to "Unlocked.".
+	unlock throttle. set throttle_state to "Unlocked.".
 	wait 1.
-
 }
