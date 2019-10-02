@@ -128,7 +128,10 @@ function executenode {
 		// finalize burn when remaining dv is very small
 		if nd:deltav:mag < 1.0 {
 			// burn until node vector starts to drift significantly from initial vector
-			wait until vdot(node_vec, nd:deltav) < 0.5.
+			until vdot(node_vec, nd:deltav) < 0.5 {
+				
+				wait 0. // allow at least 1 physics tick to elapse.
+			}
 			lock throttle to 0.
 			set remove_node to True.
 			set node_complete to True.
