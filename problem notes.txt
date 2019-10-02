@@ -12,24 +12,7 @@ functions
 	print header
 	print data
 
-=======lists of states==========================================================
-
-set program_state to "Preflight calculations.".
-set program_state to "Waiting for node.".
-set program_state to "Waiting for ship alignment.".
-set program_state to "Waiting for burn.".
-set program_state to "Executing Burn.".
-set program_state to "Finalizing Burn.".
-set program_state to "Burn Complete.".
-set program_state to "Burn Complete. Overshoot Detected. Node preserved for review.".
-
-set steering_state to "Unlocked.".
-set steering_state to "LOCKED.".
-
-set throttle_state to "Unlocked.".
-set throttle_state to "LOCKED.".
-
-=================
+================================================================
 
 first print call...
 	set program_state to "Preflight Calculation".
