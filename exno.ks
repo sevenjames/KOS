@@ -86,7 +86,9 @@ function executenode {
 	set prep_eta to (burn_eta - prep_duration).
 
 	// Wait for node.
-	wait until nd:eta <= ((burn_duration/2) + prep_duration).
+	until nd:eta <= ((burn_duration/2) + prep_duration) {
+		wait 1. // no need for fast calc while waiting for prep
+	}
 
 	// ############ insert timewarp stop here
 
@@ -96,10 +98,14 @@ function executenode {
 	// start turning ship to align with node
 	sas off.
 	lock steering to node_vec.
-	wait until vang(node_vec, ship:facing:vector) < 0.25.
+	until vang(node_vec, ship:facing:vector) < 0.25 {
+		wait 0. // allow at least 1 physics tick to elapse.
+	}
 
 	// wait for burn time
-	wait until nd:eta <= (burn_duration/2).
+	until nd:eta <= (burn_duration/2) {
+		wait 0. // allow at least 1 physics tick to elapse.
+	}
 
 	// lock throttle
 	lock throttle to tset.
@@ -127,6 +133,7 @@ function executenode {
 			set remove_node to True.
 			set node_complete to True.
 		}
+		wait 0. // allow at least 1 physics tick to elapse.
 	}
 
 	// cleanup
