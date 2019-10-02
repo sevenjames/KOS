@@ -13,6 +13,8 @@ functions
 	print data
 
 =======lists of states==========================================================
+
+set program_state to "Preflight calculations.".
 set program_state to "Waiting for node.".
 set program_state to "Waiting for ship alignment.".
 set program_state to "Waiting for burn.".
