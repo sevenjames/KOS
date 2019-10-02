@@ -24,3 +24,10 @@ program_state
 control_state
 	Steering: steer_state, Throttle: throttle_state
 
+=================
+
+first print call...
+	set program_state to "Preflight Calculation".
+	set steering_state to "Unlocked".
+	set throttle_state to "Unlocked".
+	print_header().
