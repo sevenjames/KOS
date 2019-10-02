@@ -5,6 +5,8 @@ sequence
 	wait for node
 	wait for alignment
 	wait for burn
+	execute burn
+	cleanup
 functions
 	execute burn
 	print header
