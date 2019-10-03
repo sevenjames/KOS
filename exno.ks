@@ -32,8 +32,8 @@ if clearance = 1 {
 
 function print_header {
 	set printline to 2.
-	print "EXECUTING MANEUVER NODE". at (2,printline). set printline to printline + 1.
-	print "=======================". at (2,printline). set printline to printline + 1.
+	print "EXECUTING MANEUVER NODE" at (2,printline). set printline to printline + 1.
+	print "=======================" at (2,printline). set printline to printline + 1.
 	print program_state at (2,printline). set printline to printline + 1.
 	print steering_state at (2,printline). set printline to printline + 1.
 	print throttle_state at (2,printline). set printline to printline + 1.
