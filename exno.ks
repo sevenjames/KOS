@@ -38,9 +38,9 @@ function print_header {
 	print blankline at (0,printline).
 	print program_state at (2,printline). set printline to printline + 1.
 	print blankline at (0,printline).
-	print steering_state at (2,printline). set printline to printline + 1.
+	print "Steering: " + steering_state at (2,printline). set printline to printline + 1.
 	print blankline at (0,printline).
-	print throttle_state at (2,printline). set printline to printline + 1.
+	print "Throttle: " + throttle_state at (2,printline). set printline to printline + 1.
 }
 
 function print_data {
@@ -51,7 +51,7 @@ function print_data {
 	print "burn duration    : " + round(burn_duration,1) + blanks at (2,printline). set printline to printline + 1.
 	print "nd:deltav:mag    : " + round(nd:deltav:mag,3) + blanks at (2,printline). set printline to printline + 1.
 	print "vdot             : " + round(vdot(node_vec, nd:deltav),3) + blanks at (2,printline). set printline to printline + 1.
-	print "tset             : " + round(tset,3) + blanks at (2,printline). set printline to printline + 1.
+	print "Throttle         : " + round(tset*100,2) + " %" + blanks at (2,printline). set printline to printline + 1.
 }
 
 function executenode {
