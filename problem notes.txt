@@ -1,6 +1,14 @@
 
-the 4 time calcs prints never update
-	they are not in any loops
-	
-header prints are overlapping old info, need to clear lines before printing.
+header program state is blanked at program end by kOS overwriting in that area.
+this erases the final state which would be nice to see remain on screen.
+
+"x.0" prints as "x". this makes display look jumpy.
+any way to zero-pad before printing?
+
+prep eta and burn eta times should be elapsed time since those points.
+but since they are re-calculated using ship mass, they act wrong when burning fuel.
+consider clamping at 0.
+
+tset and burn_duration both use (nd:deltav:mag/max_acc).
+currently this value is being calculated twice in main burn loop.
 
