@@ -1,16 +1,3 @@
-general structure of program
-sequence
-	preflight sanity checks
-	preflight calcs
-	wait for node
-	wait for alignment
-	wait for burn
-	execute burn
-	cleanup
-functions
-	execute burn
-	print header
-	print data
 
 ================================================================
 
@@ -21,42 +8,6 @@ first print call...
 	print_header().
 
 ================================================================
-
-set max_acc
-set tset
-check vdot
-check dv
-	check vdot
-
-burn__main
-burn_final
-complete_overburn
-complete_ok
-
-==== current structure ====
-until {
-	if {}
-	if {
-		until {}
-	}
-}
-
-=======================
-
-burn__main
-until dv < 1.0 {
-	set max_acc
-	set tset
-	if vdot(node_vec, nd:deltav) < 0 {complete_overburn}
-}
-
-burn_final
-until vdot(node_vec, nd:deltav) < 0.5 {
-	set max_acc
-	set tset
-}
-complete_ok
-
 
 
 
