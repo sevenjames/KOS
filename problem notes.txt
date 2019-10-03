@@ -1,17 +1,14 @@
+can remove print:
+mass
+thrust
+maxacc
 
-================================================================
+reduce time print precision to 1 place
+reduce data print precision to 2 places
 
+the 4 time calcs prints never update
 
-print_header().
-print_data().
+header prints are overlapping old info, need to clear lines before printing.
 
-================================================================
-
-
-
-
-adjust throttle
-test for completion
-print
-
+got an overshoot detection with extremely low TWR
 
