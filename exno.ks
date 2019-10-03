@@ -1,14 +1,3 @@
-// Execute Node Script
-// "This short script can execute any maneuver node with 0.1 m/s dv precision."
-
-// 2019 JAO
-// adjustments to math and logic, more status prints, code cleanup
-
-// Based on 2017 "Execute Node Script" in the KOS Tutorial.
-// https://ksp-kos.github.io/KOS_DOC/tutorials/exenode.html
-
-//==============================================================================
-
 @LAZYGLOBAL OFF.
 local clearance is 1.
 local nd is 0. // the node
