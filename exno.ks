@@ -47,10 +47,12 @@ function print_data {
 	set printline to 7.
 	print "prep eta         : " + round(prep_eta,1) + blanks at (2,printline). set printline to printline + 1.
 	print "prep duration    : " + round(prep_duration,1) + blanks at (2,printline). set printline to printline + 1.
+	set printline to printline + 1.
 	print "burn eta         : " + round(burn_eta,1) + blanks at (2,printline). set printline to printline + 1.
 	print "burn duration    : " + round(burn_duration,1) + blanks at (2,printline). set printline to printline + 1.
-	print "nd:deltav:mag    : " + round(nd:deltav:mag,3) + blanks at (2,printline). set printline to printline + 1.
-	print "vdot             : " + round(vdot(node_vec, nd:deltav),3) + blanks at (2,printline). set printline to printline + 1.
+	set printline to printline + 1.
+	print "Vector Offset    : " + round(vdot(node_vec, nd:deltav),3) + blanks at (2,printline). set printline to printline + 1.
+	print "Node DV          : " + round(nd:deltav:mag,3) + blanks at (2,printline). set printline to printline + 1.
 	print "Throttle         : " + round(tset*100,2) + " %" + blanks at (2,printline). set printline to printline + 1.
 }
 
