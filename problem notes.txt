@@ -19,3 +19,46 @@ first print call...
 	set steering_state to "Unlocked".
 	set throttle_state to "Unlocked".
 	print_header().
+
+================================================================
+
+set max_acc
+set tset
+check vdot
+check dv
+	check vdot
+
+burn__main
+burn_final
+complete_overburn
+complete_ok
+
+until {
+	if {}
+	if {
+		until {}
+	}
+}
+
+=======================
+
+burn__main
+until dv < 1.0 {
+	set max_acc
+	set tset
+	if vdot(node_vec, nd:deltav) < 0 {complete_overburn}
+}
+
+burn_final
+until vdot(node_vec, nd:deltav) < 0.5 {
+	set max_acc
+	set tset
+}
+complete_ok
+
+
+
+
+
+
+
