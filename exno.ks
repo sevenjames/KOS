@@ -11,6 +11,7 @@ local tset is 0. // throttle set
 local node_vec is 0. // initial node burn vector
 local remove_node is FALSE.
 local blanks is "          ".
+local blankline is "                                        ".
 local program_state is "".
 local steering_state is "Unlocked.".
 local throttle_state is "Unlocked.".
@@ -31,16 +32,19 @@ if clearance = 1 {
 }
 
 function print_header {
-	set printline to 2.
+	set printline to 1.
 	print "EXECUTING MANEUVER NODE" at (2,printline). set printline to printline + 1.
 	print "=======================" at (2,printline). set printline to printline + 1.
+	print blankline at (2,printline).
 	print program_state at (2,printline). set printline to printline + 1.
+	print blankline at (2,printline).
 	print steering_state at (2,printline). set printline to printline + 1.
+	print blankline at (2,printline).
 	print throttle_state at (2,printline). set printline to printline + 1.
 }
 
 function print_data {
-	set printline to 8.
+	set printline to 7.
 	print "prep eta         : " + round(prep_eta,1) + blanks at (2,printline). set printline to printline + 1.
 	print "prep duration    : " + round(prep_duration,1) + blanks at (2,printline). set printline to printline + 1.
 	print "burn eta         : " + round(burn_eta,1) + blanks at (2,printline). set printline to printline + 1.
@@ -51,8 +55,8 @@ function print_data {
 }
 
 function executenode {
-	//set terminal:width to 50.//confirm preferred term size in game
-	//set terminal:height to 24.
+	set terminal:width to 40.
+	set terminal:height to 24.
 	clearscreen.
 
 	set program_state to "Preflight calculations.".
