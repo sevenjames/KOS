@@ -1,16 +1,17 @@
 
 ================================================================
 
-first print call...
-	set program_state to "Preflight Calculation".
-	set steering_state to "Unlocked".
-	set throttle_state to "Unlocked".
-	print_header().
+
+print_header().
+print_data().
 
 ================================================================
 
 
 
 
+adjust throttle
+test for completion
+print
 
 
