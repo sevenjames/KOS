@@ -41,16 +41,13 @@ function print_header {
 
 function print_data {
 	set printline to 8.
-	print "prep eta         : " + round(prep_eta,2) + blanks at (2,printline). set printline to printline + 1.
-	print "prep duration    : " + round(prep_duration,2) + blanks at (2,printline). set printline to printline + 1.
-	print "burn eta         : " + round(burn_eta,2) + blanks at (2,printline). set printline to printline + 1.
-	print "burn duration    : " + round(burn_duration,2) + blanks at (2,printline). set printline to printline + 1.
-	print "mass             : " + round(ship:mass,5) + blanks at (2,printline). set printline to printline + 1.
-	print "availablethrust  : " + round(ship:availablethrust,5) + blanks at (2,printline). set printline to printline + 1.
-	print "max_acc          : " + round(max_acc,5) + blanks at (2,printline). set printline to printline + 1.
-	print "nd:deltav:mag    : " + round(nd:deltav:mag,5) + blanks at (2,printline). set printline to printline + 1.
-	print "vdot             : " + round(vdot(node_vec, nd:deltav),5) + blanks at (2,printline). set printline to printline + 1.
-	print "tset             : " + round(tset,5) + blanks at (2,printline). set printline to printline + 1.
+	print "prep eta         : " + round(prep_eta,1) + blanks at (2,printline). set printline to printline + 1.
+	print "prep duration    : " + round(prep_duration,1) + blanks at (2,printline). set printline to printline + 1.
+	print "burn eta         : " + round(burn_eta,1) + blanks at (2,printline). set printline to printline + 1.
+	print "burn duration    : " + round(burn_duration,1) + blanks at (2,printline). set printline to printline + 1.
+	print "nd:deltav:mag    : " + round(nd:deltav:mag,3) + blanks at (2,printline). set printline to printline + 1.
+	print "vdot             : " + round(vdot(node_vec, nd:deltav),3) + blanks at (2,printline). set printline to printline + 1.
+	print "tset             : " + round(tset,3) + blanks at (2,printline). set printline to printline + 1.
 }
 
 function executenode {
@@ -111,7 +108,7 @@ function executenode {
 		if vdot(node_vec, nd:deltav) < 0.0 {
 			lock throttle to 0.
 			set remove_node to False. // keep node for review
-			set program_state to "Burn Complete. Overshoot Detected. Node preserved for review.".
+			set program_state to "Burn Complete. Overshoot Detected.".
 			break.
 		}
 		if vdot(node_vec, nd:deltav) < 0.5 AND nd:deltav:mag < 1.0 {
