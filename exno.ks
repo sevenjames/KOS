@@ -56,30 +56,32 @@ function print_data {
 	print "Throttle         : " + round(tset*100,2) + " %" + blanks at (2,printline). set printline to printline + 1.
 }
 
+function calculate_times {
+	// Crude calculation of estimated duration of burn
+	set burn_duration to (nd:deltav:mag/max_acc).
+	// prep time = 10s + 10s per ton, consider setting a 60s minimum <<<
+	set prep_duration to (10 + 10*ship:mass).
+	// other times
+	set node_eta to nd:eta.
+	set burn_eta to (node_eta - burn_duration/2).
+	set prep_eta to (burn_eta - prep_duration).
+}
+
 function executenode {
 	set terminal:width to 40.
 	set terminal:height to 24.
 	clearscreen.
 
-	set program_state to "Preflight calculations.".
-	print_header().
 	set nd to nextnode. // get the next available maneuver node
 	set node_vec to nd:deltav. // save the initial node burn vector
-	// Crude calculation of estimated duration of burn
 	set max_acc to (ship:availablethrust/ship:mass).
-	set burn_duration to (nd:deltav:mag/max_acc).
-	// prep time = 10s + 10s per ton, consider setting a 60s minimum <<<
-	set prep_duration to (10 + 10*ship:mass).
-	// calc times
-	set node_eta to nd:eta.
-	set burn_eta to (node_eta - burn_duration/2).
-	set prep_eta to (burn_eta - prep_duration).
-
+	calculate_times().
 	set program_state to "Waiting for node.".
 	print_header().
 	until nd:eta <= ((burn_duration/2) + prep_duration) {
+		calculate_times().
 		print_data().
-		wait 1. // no need for fast calc while waiting for prep
+		wait 0.1.
 	}
 
 	// <<< insert timewarp stop here <<<
@@ -90,15 +92,17 @@ function executenode {
 	set program_state to "Waiting for ship alignment.".
 	print_header().
 	until vang(node_vec, ship:facing:vector) < 0.25 {
+		calculate_times().
 		print_data().
-		wait 0. // allow at least 1 physics tick to elapse
+		wait 0.1.
 	}
 
 	set program_state to "Waiting for burn.".
 	print_header().
 	until nd:eta <= (burn_duration/2) {
+		calculate_times().
 		print_data().
-		wait 0. // allow at least 1 physics tick to elapse
+		wait 0.1.
 	}
 
 	lock throttle to tset.
@@ -106,6 +110,7 @@ function executenode {
 	set program_state to "Executing Burn.".
 	print_header().
 	until 0 {
+		calculate_times().
 		print_data().
 		set max_acc to (ship:availablethrust/ship:mass). // recalc max_acceleration
 		set tset to min(nd:deltav:mag/max_acc, 1). // recalc throttle setting
