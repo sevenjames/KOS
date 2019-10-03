@@ -70,6 +70,7 @@ function executenode {
 	clearscreen.
 
 	set program_state to "Preflight calculations.".
+	print_header().
 	// get the next available maneuver node
 	set nd to nextnode.
 	// Crude calculation of estimated duration of burn
@@ -83,34 +84,40 @@ function executenode {
 	set prep_eta to (burn_eta - prep_duration).
 
 	set program_state to "Waiting for node.".
+	print_header().
 	until nd:eta <= ((burn_duration/2) + prep_duration) {
+		print_data().
 		wait 1. // no need for fast calc while waiting for prep
 	}
 
 	// <<< insert timewarp stop here <<<
 
-	set program_state to "Waiting for ship alignment.".
 	set node_vec to nd:deltav. // save the initial node burn vector
 	sas off.
-	lock steering to node_vec. set steering_state to "LOCKED.".
+	lock steering to node_vec.
+	set steering_state to "LOCKED.".
+	set program_state to "Waiting for ship alignment.".
+	print_header().
 	until vang(node_vec, ship:facing:vector) < 0.25 {
+		print_data().
 		wait 0. // allow at least 1 physics tick to elapse
 	}
 
 	set program_state to "Waiting for burn.".
+	print_header().
 	until nd:eta <= (burn_duration/2) {
+		print_data().
 		wait 0. // allow at least 1 physics tick to elapse
 	}
 
+	lock throttle to tset.
+	set throttle_state to "LOCKED.".
 	set program_state to "Executing Burn.".
-	lock throttle to tset. set throttle_state to "LOCKED.".
+	print_header().
 	until 0 {
-		// recalc max_acceleration
-		set max_acc to (ship:availablethrust/ship:mass).
-
-		// recalc throttle setting
-		set tset to min(nd:deltav:mag/max_acc, 1).
-
+		print_data().
+		set max_acc to (ship:availablethrust/ship:mass). // recalc max_acceleration
+		set tset to min(nd:deltav:mag/max_acc, 1). // recalc throttle setting
 		// vdot of initial and current vectors is used to measure completeness of burn
 		// negative value indicates maneuver overshoot. possible with high TWR.
 		if vdot(node_vec, nd:deltav) < 0.0 {
@@ -119,21 +126,22 @@ function executenode {
 			set program_state to "Burn Complete. Overshoot Detected. Node preserved for review.".
 			break.
 		}
-
 		if vdot(node_vec, nd:deltav) < 0.5 AND nd:deltav:mag < 1.0 {
 			lock throttle to 0.
 			set remove_node to True.
 			set program_state to "Burn Complete.".
 			break.
 		}
-		
 		wait 0. // allow at least 1 physics tick to elapse
 	}
-
+	print_header().
+	print_data().
+	
 	// cleanup
 	if remove_node {remove nd.}
 	set ship:control:pilotmainthrottle to 0.
 	unlock steering. set steering_state to "Unlocked.".
 	unlock throttle. set throttle_state to "Unlocked.".
+	print_header().
 	wait 1.
 }
