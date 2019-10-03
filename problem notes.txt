@@ -33,6 +33,7 @@ burn_final
 complete_overburn
 complete_ok
 
+==== current structure ====
 until {
 	if {}
 	if {
