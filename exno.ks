@@ -20,7 +20,6 @@ local burn_eta is 0.
 local prep_eta is 0.
 local tset is 0. // throttle set
 local node_vec is 0. // initial node burn vector
-local node_complete is FALSE.
 local remove_node is FALSE.
 local blanks is "          ".
 local program_state is "".
@@ -105,7 +104,7 @@ function executenode {
 
 	set program_state to "Executing Burn.".
 	lock throttle to tset. set throttle_state to "LOCKED.".
-	until node_complete {
+	until 0 {
 		// recalc max_acceleration
 		set max_acc to (ship:availablethrust/ship:mass).
 
@@ -124,8 +123,8 @@ function executenode {
 		if vdot(node_vec, nd:deltav) < 0.5 AND nd:deltav:mag < 1.0 {
 			lock throttle to 0.
 			set remove_node to True.
-			set node_complete to True.
 			set program_state to "Burn Complete.".
+			break.
 		}
 		
 		wait 0. // allow at least 1 physics tick to elapse
