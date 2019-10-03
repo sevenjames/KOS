@@ -106,34 +106,28 @@ function executenode {
 	set program_state to "Executing Burn.".
 	lock throttle to tset. set throttle_state to "LOCKED.".
 	until node_complete {
-		// recalculate current max_acceleration. this goes up as fuel is spent and ship mass goes down.
+		// recalc max_acceleration
 		set max_acc to (ship:availablethrust/ship:mass).
 
-		// throttle control; adjusts based on remaining node dv
+		// recalc throttle setting
 		set tset to min(nd:deltav:mag/max_acc, 1).
 
 		// vdot of initial and current vectors is used to measure completeness of burn
 		// negative value indicates maneuver overshoot. possible with high TWR.
-		if vdot(node_vec, nd:deltav) < 0 {
+		if vdot(node_vec, nd:deltav) < 0.0 {
 			lock throttle to 0.
 			set remove_node to False. // keep node for review
 			set program_state to "Burn Complete. Overshoot Detected. Node preserved for review.".
 			break.
 		}
 
-		// finalize burn when remaining dv is very small
-		if nd:deltav:mag < 1.0 {
-			set program_state to "Finalizing Burn.".
-			// burn until node vector starts to drift significantly from initial vector
-			until vdot(node_vec, nd:deltav) < 0.5 {
-				
-				wait 0. // allow at least 1 physics tick to elapse
-			}
+		if vdot(node_vec, nd:deltav) < 0.5 AND nd:deltav:mag < 1.0 {
 			lock throttle to 0.
 			set remove_node to True.
 			set node_complete to True.
 			set program_state to "Burn Complete.".
 		}
+		
 		wait 0. // allow at least 1 physics tick to elapse
 	}
 
