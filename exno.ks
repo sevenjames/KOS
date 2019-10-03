@@ -60,8 +60,8 @@ function executenode {
 
 	set program_state to "Preflight calculations.".
 	print_header().
-	// get the next available maneuver node
-	set nd to nextnode.
+	set nd to nextnode. // get the next available maneuver node
+	set node_vec to nd:deltav. // save the initial node burn vector
 	// Crude calculation of estimated duration of burn
 	set max_acc to (ship:availablethrust/ship:mass).
 	set burn_duration to (nd:deltav:mag/max_acc).
@@ -81,7 +81,6 @@ function executenode {
 
 	// <<< insert timewarp stop here <<<
 
-	set node_vec to nd:deltav. // save the initial node burn vector
 	sas off.
 	lock steering to node_vec.
 	set steering_state to "LOCKED.".
