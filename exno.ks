@@ -35,11 +35,11 @@ function print_header {
 	set printline to 1.
 	print "EXECUTING MANEUVER NODE" at (2,printline). set printline to printline + 1.
 	print "=======================" at (2,printline). set printline to printline + 1.
-	print blankline at (2,printline).
+	print blankline at (0,printline).
 	print program_state at (2,printline). set printline to printline + 1.
-	print blankline at (2,printline).
+	print blankline at (0,printline).
 	print steering_state at (2,printline). set printline to printline + 1.
-	print blankline at (2,printline).
+	print blankline at (0,printline).
 	print throttle_state at (2,printline). set printline to printline + 1.
 }
 
