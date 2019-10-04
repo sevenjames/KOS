@@ -11,7 +11,7 @@ KOS flight control scripts for Kerbal Space Program.
 Based on 2017 "Execute Node Script" in the KOS Tutorial.
 [https://ksp-kos.github.io/KOS_DOC/tutorials/exenode.html](https://ksp-kos.github.io/KOS_DOC/tutorials/exenode.html)
 
-* 2019-09 sevenjames
+2019-09 sevenjames
 * total rebuild
 * improved flow control
 * sanity checks
