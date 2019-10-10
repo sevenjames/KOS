@@ -78,7 +78,8 @@ function executenode {
 	calculate_times().
 	set program_state to "Waiting for node.".
 	print_header().
-	until nd:eta <= ((burn_duration/2) + prep_duration) {
+	// until nd:eta <= ((burn_duration/2) + prep_duration) {
+	until 1 { // SKIP WAIT FOR TESTING ALIGNMENT <<<<<<<<<<<<<< REMOVE WHEN DONE
 		calculate_times().
 		print_data().
 		wait 0.1.
@@ -87,11 +88,14 @@ function executenode {
 	// <<< insert timewarp stop here <<<
 
 	sas off.
+	set steeringmanager:pitchts to 0.4. // def is 2, too slow
+	set steeringmanager:yawts to 0.4.
 	lock steering to node_vec.
 	set steering_state to "LOCKED.".
-	set program_state to "Waiting for ship alignment.".
+	// set program_state to "Waiting for ship alignment.".
+	set program_state to "Waiting for ship alignment. EXPERIMENTAL".
 	print_header().
-	until vang(node_vec, ship:facing:vector) < 0.25 {
+	until vang(node_vec, ship:facing:vector) < 0.25 AND angularvel:mag < 0.01 {
 		calculate_times().
 		print_data().
 		wait 0.1.
